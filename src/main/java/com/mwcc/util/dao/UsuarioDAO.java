@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
 import com.mwcc.util.jpa.Transactional;
+import com.mwcc.util.model.Perfil;
 import com.mwcc.util.model.Usuario;
 import com.mwcc.util.service.NegocioException;
 
@@ -29,6 +30,9 @@ public class UsuarioDAO implements Serializable {
 		return em.createQuery("From Usuario", Usuario.class).getResultList();
 	}
 	
+	public List<Perfil> buscarTodosPerfis(){
+		return em.createQuery("From Perfil", Perfil.class).getResultList();
+	}
 	public void salvar(Usuario usuario) {
 		em.merge(usuario);
 	}

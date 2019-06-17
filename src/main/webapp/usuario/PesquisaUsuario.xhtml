@@ -9,6 +9,9 @@
 	<ui:define name="titulo">Novo usuário</ui:define>
 
 	<ui:define name="corpo">
+		<f:metadata>
+			<f:event listener="#{pesquisaUsuarioBean.init}" type="preRenderView"></f:event>
+		</f:metadata>
 
 		<p:tooltip />
 
@@ -35,7 +38,7 @@
 					style="text-align: center; width: 100px">
 					<h:outputText value="#{usuario.id}" />
 				</p:column>
-				<p:column headerText="Nome">
+				<p:column headerText="Nome" >
 					<h:outputText value="#{usuario.nome}" />
 				</p:column>
 				<p:column headerText="E-mail">

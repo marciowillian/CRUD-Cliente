@@ -1,12 +1,8 @@
 package com.mwcc.util.controller;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -37,9 +33,11 @@ public class PesquisaUsuarioBean implements Serializable {
 		usuarioSelecionado = new Usuario();
 	}
 
-	@PostConstruct
 	public void init() {
-		limpar();
+		if (FacesUtil.isNotPostback()) {
+			limpar();
+		}
+
 	}
 
 	public void excluir() {
@@ -50,7 +48,6 @@ public class PesquisaUsuarioBean implements Serializable {
 		} catch (NegocioException e) {
 			FacesUtil.addErrorMessage(e.getMessage());
 		}
-
 
 	}
 
