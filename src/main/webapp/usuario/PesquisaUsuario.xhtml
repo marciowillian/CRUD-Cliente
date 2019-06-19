@@ -13,21 +13,33 @@
 			<f:event listener="#{pesquisaUsuarioBean.init}" type="preRenderView"></f:event>
 		</f:metadata>
 
-		<p:tooltip />
-
 		<h:form id="frmPesquisa">
 			<h1>Novo usuário</h1>
-
-			<p:messages id="msg" closable="true" showDetail="true">
-				<p:autoUpdate />
-			</p:messages>
-
+			
+			<p:messages autoUpdate="true"/>
+			
 			<p:toolbar style="margin-top: 20px">
 				<p:toolbarGroup>
-					<p:button value="Novo" outcome="/usuario/CadastroUsuario.xhtml" />
+					<p:commandButton value="Pesquisar"
+						action="#{pesquisaUsuarioBean.pesquisar}" update="frmPesquisa"
+						process="frmPesquisa" />
 				</p:toolbarGroup>
 
+				<p:toolbarGroup align="right">
+					<p:button value="Novo" outcome="/usuario/CadastroUsuario.xhtml" />
+				</p:toolbarGroup>
 			</p:toolbar>
+
+			<p:panelGrid columns="2" columnClasses="rotulo, campo"
+				style="width: 100%; margin-top: 20px">
+
+				<p:outputLabel value="Nome" for="nome" />
+				<p:inputText id="nome"
+					value="#{pesquisaUsuarioBean.usuarioFilter.nome}" />
+				<p:outputLabel value="E-mail" for="email" />
+				<p:inputText id="email"
+					value="#{pesquisaUsuarioBean.usuarioFilter.email}" />
+			</p:panelGrid>
 
 			<p:dataTable id="usuariosTable"
 				value="#{pesquisaUsuarioBean.usuarios}" var="usuario"
@@ -38,7 +50,7 @@
 					style="text-align: center; width: 100px">
 					<h:outputText value="#{usuario.id}" />
 				</p:column>
-				<p:column headerText="Nome" >
+				<p:column headerText="Nome">
 					<h:outputText value="#{usuario.nome}" />
 				</p:column>
 				<p:column headerText="E-mail">

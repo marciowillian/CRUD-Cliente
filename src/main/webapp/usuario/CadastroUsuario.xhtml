@@ -20,15 +20,13 @@
 			<h1>#{cadastroUsuarioBean.editando ? 'Edição de usuário' : 'Novo
 				usuário'}</h1>
 
-			<p:messages id="msg" closable="true" showDetail="true">
-				<p:autoUpdate />
-			</p:messages>
+			<p:growl id="growl" showDetail="true" sticky="true" />
 
 			<p:toolbar style="margin-top: 20px">
 				<p:toolbarGroup>
 					<p:button value="Novo" outcome="/usuario/CadastroUsuario.xhtml" />
 					<p:commandButton value="Salvar"
-						action="#{cadastroUsuarioBean.salvar}" update="@form" />
+						action="#{cadastroUsuarioBean.salvar}" update=":frmCadastro:growl" />
 				</p:toolbarGroup>
 
 				<p:toolbarGroup align="right">
@@ -59,8 +57,9 @@
 					<p:pickList id="pickList" value="#{cadastroUsuarioBean.perfis}"
 						var="perfil" itemLabel="#{perfil.descricao}" itemValue="#{perfil}"
 						showSourceFilter="true" showTargetFilter="true"
-						showCheckbox="true" filterMatchMode="contains" converter="PerfilConverter">
-						
+						showCheckbox="true" filterMatchMode="contains"
+						converter="PerfilConverter">
+
 						<f:facet name="sourceCaption">Grupos disponíveis</f:facet>
 						<f:facet name="targetCaption">Grupos do usuário</f:facet>
 					</p:pickList>

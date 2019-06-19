@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -63,7 +65,10 @@ public class CadastroUsuarioBean implements Serializable {
 		try {
 			usuario.setPerfil(perfis.getTarget());
 			cadastroUsuarioService.salvar(usuario);
-			FacesUtil.addSuccessMessage("Usuário salvo com sucesso!");
+			
+			FacesContext context = FacesContext.getCurrentInstance();
+			
+			context.addMessage(null, new FacesMessage("Salvo", "Usuario " + usuario.getNome() + " salvo com sucesso"));
 			this.limpar();
 		} catch (NegocioException e) {
 			FacesUtil.addErrorMessage(e.getMessage());

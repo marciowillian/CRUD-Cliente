@@ -7,6 +7,14 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+
+import com.mwcc.util.filter.UsuarioFilter;
 import com.mwcc.util.jpa.Transactional;
 import com.mwcc.util.model.Perfil;
 import com.mwcc.util.model.Usuario;
@@ -30,9 +38,25 @@ public class UsuarioDAO implements Serializable {
 		return em.createQuery("From Usuario", Usuario.class).getResultList();
 	}
 	
-	public List<Perfil> buscarTodosPerfis(){
-		return em.createQuery("From Perfil", Perfil.class).getResultList();
+	@SuppressWarnings("unchecked")
+	public List<Usuario> filtrados(UsuarioFilter usuario){
+		
+		Session session = em.unwrap(Session.class);
+		Criteria criteria = session.createCriteria(Usuario.class);
+		
+		if(StringUtils.isNotBlank(usuario.getNome())) {
+			criteria.add(Restrictions.ilike("nome", usuario.getNome(), MatchMode.ANYWHERE));
+		}
+		
+		if(StringUtils.isNotBlank(usuario.getEmail())) {
+			criteria.add(Restrictions.ilike("email", usuario.getEmail(), MatchMode.ANYWHERE));
+		}
+		
+		
+		return criteria.addOrder(Order.asc("nome")).list();
+		
 	}
+	
 	public void salvar(Usuario usuario) {
 		em.merge(usuario);
 	}

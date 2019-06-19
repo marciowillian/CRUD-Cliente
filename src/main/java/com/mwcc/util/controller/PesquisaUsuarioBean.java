@@ -1,6 +1,7 @@
 package com.mwcc.util.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.view.ViewScoped;
@@ -8,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.mwcc.util.dao.UsuarioDAO;
+import com.mwcc.util.filter.UsuarioFilter;
 import com.mwcc.util.jsf.FacesUtil;
 import com.mwcc.util.model.Usuario;
 import com.mwcc.util.service.NegocioException;
@@ -24,17 +26,23 @@ public class PesquisaUsuarioBean implements Serializable {
 	@Inject
 	private UsuarioDAO usuarioDAO;
 
+	private Usuario usuario;
 	private Usuario usuarioSelecionado;
+
+	private UsuarioFilter usuarioFilter;
 
 	private List<Usuario> usuarios;
 
 	public void limpar() {
-		usuarios = usuarioDAO.buscarTodos();
+		usuario = new Usuario();
+		usuarioFilter = new UsuarioFilter();
+		usuarios = new ArrayList<>();
 		usuarioSelecionado = new Usuario();
+		usuarios = usuarioDAO.buscarTodos();
 	}
 
 	public void init() {
-		if (FacesUtil.isNotPostback()) {
+		if (usuario == null) {
 			limpar();
 		}
 
@@ -51,6 +59,15 @@ public class PesquisaUsuarioBean implements Serializable {
 
 	}
 
+	public void pesquisar() {
+		System.out.println("Entrei no pesquisar...");
+		usuarios = usuarioDAO.filtrados(usuarioFilter);
+		
+		for(Usuario usu : usuarios) {
+		System.out.println(usu.getNome());	
+		}
+	}
+	
 	public Usuario getUsuarioSelecionado() {
 		return usuarioSelecionado;
 	}
@@ -65,6 +82,14 @@ public class PesquisaUsuarioBean implements Serializable {
 
 	public void setUsuarios(List<Usuario> usuarios) {
 		this.usuarios = usuarios;
+	}
+
+	public UsuarioFilter getUsuarioFilter() {
+		return usuarioFilter;
+	}
+
+	public void setUsuarioFilter(UsuarioFilter usuarioFilter) {
+		this.usuarioFilter = usuarioFilter;
 	}
 
 }
